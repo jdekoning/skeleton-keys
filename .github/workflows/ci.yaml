@@ -17,10 +17,9 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: haunted_hause
 
     env:
-      TF_WORKSPACE: my-workspace
+      tf_dir: haunted_hause
 
     steps:
       - name: Configure AWS credentials
@@ -41,26 +40,33 @@ jobs:
           iac_version: 'v14'
           policy_type: 'aws'
           only_warn: true
+          iac_dir: ${{ env.tf_dir }}
 
-      - uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        id: setup
+        uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: 1.0.3
 
+      - name: Check terraform
+        id: version
+        run: terraform -chdir=haunted_house version
+
       - name: Terraform init
         id: init
-        run: terraform init
+        run: terraform  -chdir=haunted_houseinit
 
-      - name: Terraform Fmt
+      - name: Terraform Format
         id: fmt
-        run: terraform fmt -check
+        run: terraform -chdir=haunted_house fmt -check
 
       - name: Terraform validate
         id: validate
-        run: terraform validate -no-color
+        run: terraform -chdir=haunted_house validate -no-color
 
       - name: Terraform plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform -chdir=haunted_house plan -no-color
 
       - name: Plan output
         id: output
@@ -99,7 +105,7 @@ jobs:
       - name: Terraform apply
         id: apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve -input=false
+        run: terraform -chdir=haunted_house apply -auto-approve -input=false
 
 #      - name: Install InSpec
 #        uses: actionshub/chef-install@main
