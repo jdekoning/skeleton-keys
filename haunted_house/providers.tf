@@ -1,8 +1,9 @@
 terraform {
   backend "s3" {
-    bucket = "haunted-house-skeletons"
-    key    = "core/terraform.tfstate"
-    region = "eu-west-1"
+    bucket     = "haunted-house-skeletons"
+    key        = "core/terraform.tfstate"
+    region     = "eu-west-1"
+    kms_key_id = "alias/boundary_state-key"
   }
 
   required_providers {
