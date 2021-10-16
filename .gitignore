@@ -20,8 +20,10 @@ crash.log
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
+exports.tf
 override.tf
 override.tf.json
+*_exports.tf
 *_override.tf
 *_override.tf.json
 *secrets.tfvars

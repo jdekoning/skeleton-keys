@@ -18,5 +18,6 @@ Using Boundary to access cryptically protected secrets
 Add a `secrets.tfvars` to the `setup` folder and add:
 ```terraform
 github_repository = "<repository name>"
-github_token = "<github token with admin access on repository>"
+github_token      = "<github token with admin access on repository>"
+aws_bucket        = "<bucket to be used for state management>"
 ```

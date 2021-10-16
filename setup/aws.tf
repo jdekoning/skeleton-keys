@@ -3,6 +3,21 @@ variable "aws_bucket" {
   type        = string
 }
 
+resource "aws_kms_key" "boundary_state" {
+  description             = "KMS key boundary state"
+  deletion_window_in_days = 10
+
+  tags = {
+    creator = "terraform"
+    goal    = "haunted_house"
+  }
+}
+
+resource "aws_kms_alias" "boundary_state" {
+  name          = "alias/boundary_state-key"
+  target_key_id = aws_kms_key.boundary_state.key_id
+}
+
 resource "aws_s3_bucket" "bdr-model-versioning" {
   bucket = var.aws_bucket
 
