@@ -13,3 +13,10 @@ Using Boundary to access cryptically protected secrets
   - Managed service accessible
 - Boundary workers
 - Vault cluster for integration
+
+## Create CI user
+Add a `secrets.tfvars` to the `setup` folder and add:
+```terraform
+github_repository = "<repository name>"
+github_token = "<github token with admin access on repository>"
+```
