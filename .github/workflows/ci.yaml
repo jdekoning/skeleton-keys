@@ -46,13 +46,13 @@ jobs:
         with:
           terraform_version: 1.0.3
 
-      - name: Terraform Fmt
-        id: fmt
-        run: terraform fmt -check
-
       - name: Terraform init
         id: init
         run: terraform init
+
+      - name: Terraform Fmt
+        id: fmt
+        run: terraform fmt -check
 
       - name: Terraform validate
         id: validate
