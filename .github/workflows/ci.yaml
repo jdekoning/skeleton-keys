@@ -19,7 +19,7 @@ jobs:
         shell: bash
 
     env:
-      tf_dir: haunted_hause
+      tf_dir: haunted_house
 
     steps:
       - name: Configure AWS credentials
@@ -54,7 +54,7 @@ jobs:
 
       - name: Terraform init
         id: init
-        run: terraform  -chdir=haunted_houseinit
+        run: terraform  -chdir=haunted_house init
 
       - name: Terraform Format
         id: fmt
