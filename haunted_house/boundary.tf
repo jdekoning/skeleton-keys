@@ -19,8 +19,8 @@ resource "null_resource" "run_boundary_fake" {
   ]
 
   triggers = {
-    config = md5(file("scripts/boundary-controller.hcl"))
-    general_script = md5(file("scripts/prepare_instance.sh"))
+    config          = md5(file("scripts/boundary-controller.hcl"))
+    general_script  = md5(file("scripts/prepare_instance.sh"))
     boundary_script = md5(file("scripts/setup_boundary.sh"))
   }
 
