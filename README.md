@@ -21,3 +21,6 @@ github_repository = "<repository name>"
 github_token      = "<github token with admin access on repository>"
 aws_bucket        = "<bucket to be used for state management>"
 ```
+
+## Domain registration
+Because of the associated costs the domain to be used is expected to have been created already on AWS (route53).
