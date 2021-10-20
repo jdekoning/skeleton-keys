@@ -6,11 +6,6 @@ variable "aws_bucket" {
 resource "aws_kms_key" "boundary_state" {
   description             = "KMS key boundary state"
   deletion_window_in_days = 10
-
-  tags = {
-    creator = "terraform"
-    goal    = "haunted_house"
-  }
 }
 
 resource "aws_kms_alias" "boundary_state" {
@@ -26,11 +21,6 @@ resource "aws_s3_bucket" "bdr-model-versioning" {
   }
 
   force_destroy = true
-
-  tags = {
-    creator = "terraform"
-    goal    = "haunted_house"
-  }
 }
 
 data "aws_iam_policy" "aws_admin" {
@@ -39,11 +29,6 @@ data "aws_iam_policy" "aws_admin" {
 
 resource "aws_iam_user" "github_ci" {
   name = "github_ci_user"
-
-  tags = {
-    creator = "terraform"
-    goal    = "haunted_house"
-  }
 }
 
 resource "aws_iam_access_key" "github_ci" {
