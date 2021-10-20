@@ -39,3 +39,4 @@ override.tf.json
 # Exclude secrets
 /secrets/boundary.rsa
 /secrets/boundary.rsa.pub
+/ssh_into_machine_and_tail.sh
