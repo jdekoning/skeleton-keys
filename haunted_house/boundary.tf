@@ -35,7 +35,7 @@ resource "null_resource" "run_boundary_fake" {
 
   provisioner "file" {
     source      = "scripts/boundary-controller.hcl"
-    destination = "/etc/boundary-controller.hcl"
+    destination = "/tmp/boundary-controller.hcl"
   }
 
   provisioner "remote-exec" {
