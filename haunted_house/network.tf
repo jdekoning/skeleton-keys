@@ -77,6 +77,24 @@ resource "aws_security_group" "boundary-ssh" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  ingress {
+    description      = "Inbound Boundary API"
+    from_port        = var.boundary_api_port
+    to_port          = var.boundary_api_port
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    description      = "Inbound NGINX test"
+    from_port        = 9999
+    to_port          = 9999
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   egress {
     description      = "Outbound all allowed"
     from_port        = 0

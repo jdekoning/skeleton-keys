@@ -13,14 +13,56 @@ resource "aws_instance" "boundary_controller" {
   }
 }
 
-resource "null_resource" "run_boundary_fake" {
+resource "null_resource" "install_boundary_machine" {
   depends_on = [
-    aws_instance.boundary_controller
+    aws_instance.boundary_controller,
+    local_file.boundary_postgresql_crt,
+    local_file.boundary_postgresql_key,
+  ]
+
+  triggers = {
+    instance       = aws_instance.boundary_controller.id
+    general_script = md5(file("scripts/prepare_instance.sh"))
+  }
+
+  connection {
+    host        = aws_instance.boundary_controller.public_ip
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = tls_private_key.boundary_ssh.private_key_pem
+    agent       = "false"
+    timeout     = "3m"
+  }
+
+  provisioner "file" {
+    source      = "../secrets/boundary-postgresql.key"
+    destination = "/tmp/boundary-postgresql.key"
+  }
+
+  provisioner "file" {
+    source      = "../secrets/boundary-postgresql.crt"
+    destination = "/tmp/boundary-postgresql.crt"
+  }
+
+  provisioner "remote-exec" {
+    script = "scripts/prepare_instance.sh"
+  }
+
+  provisioner "remote-exec" {
+    script = "scripts/start_postgresql.sh"
+  }
+
+}
+
+resource "null_resource" "install_boundary_controller" {
+  depends_on = [
+    null_resource.install_boundary_machine,
+    local_file.boundary_controller_crt,
+    local_file.boundary_controller_key,
   ]
 
   triggers = {
     config          = md5(file("scripts/boundary-controller.hcl"))
-    general_script  = md5(file("scripts/prepare_instance.sh"))
     boundary_script = md5(file("scripts/setup_boundary.sh"))
   }
 
@@ -28,7 +70,7 @@ resource "null_resource" "run_boundary_fake" {
     host        = aws_instance.boundary_controller.public_ip
     type        = "ssh"
     user        = "ubuntu"
-    private_key = tls_private_key.boundary.private_key_pem
+    private_key = tls_private_key.boundary_ssh.private_key_pem
     agent       = "false"
     timeout     = "3m"
   }
@@ -38,7 +80,18 @@ resource "null_resource" "run_boundary_fake" {
     destination = "/tmp/boundary-controller.hcl"
   }
 
-  provisioner "remote-exec" {
-    script = "scripts/prepare_instance.sh"
+  provisioner "file" {
+    source      = "../secrets/boundary-controller.key"
+    destination = "/tmp/boundary-controller.key"
   }
+
+  provisioner "file" {
+    source      = "../secrets/boundary-controller.crt"
+    destination = "/tmp/boundary-controller.crt"
+  }
+
+  provisioner "remote-exec" {
+    script = "scripts/setup_boundary.sh"
+  }
+
 }
