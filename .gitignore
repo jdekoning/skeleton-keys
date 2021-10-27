@@ -37,6 +37,6 @@ override.tf.json
 # example: *tfplan*
 
 # Exclude secrets
-/secrets/boundary.rsa
-/secrets/boundary.rsa.pub
-/ssh_into_machine_and_tail.sh
+**/secrets/boundary.rsa
+**/secrets/boundary.rsa.pub
+**/ssh_into_machine_and_tail.sh

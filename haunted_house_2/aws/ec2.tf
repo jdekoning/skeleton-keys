@@ -168,6 +168,7 @@ resource "aws_instance" "controller" {
 }
 
 resource "aws_security_group" "controller" {
+  name_prefix = "controller"
   vpc_id = aws_vpc.main.id
 }
 
@@ -189,6 +190,15 @@ resource "aws_security_group_rule" "allow_9200_controller" {
   security_group_id = aws_security_group.controller.id
 }
 
+resource "aws_security_group_rule" "allow_9200_controller_lb" {
+  type                     = "ingress"
+  from_port                = 9200
+  to_port                  = 9200
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.controller.id
+  source_security_group_id = aws_security_group.controller_lb.id
+}
+
 resource "aws_security_group_rule" "allow_9201_controller" {
   type              = "ingress"
   from_port         = 9201
@@ -208,6 +218,7 @@ resource "aws_security_group_rule" "allow_egress_controller" {
 }
 
 resource "aws_security_group" "worker" {
+  name_prefix = "worker"
   vpc_id = aws_vpc.main.id
 }
 

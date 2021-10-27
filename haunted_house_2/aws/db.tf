@@ -15,6 +15,7 @@ resource "aws_db_instance" "boundary" {
 }
 
 resource "aws_security_group" "db" {
+  name_prefix = "db"
   vpc_id = aws_vpc.main.id
 }
 
