@@ -29,7 +29,7 @@ variable "boundary_controller_port" {
 variable "boundary_path_pattern" {
   description = "The path-pattern on which Boundary will react through the loadbalancer"
   type        = string
-  default     = "/boundary"
+  default     = "/*"
 }
 
 variable "boundary_worker_port" {

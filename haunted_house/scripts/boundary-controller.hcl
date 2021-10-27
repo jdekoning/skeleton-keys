@@ -26,6 +26,7 @@ listener "tcp" {
   # The purpose of this listener block
   purpose = "api"
 
+  tls_disable = "true"
   tls_cert_file = "/opt/boundary/boundary-controller.crt"
   tls_key_file  = "/opt/boundary/boundary-controller.key"
 

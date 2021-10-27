@@ -62,6 +62,7 @@ resource "null_resource" "install_boundary_controller" {
   ]
 
   triggers = {
+    instance        = aws_instance.boundary_controller.id
     config          = md5(file("scripts/boundary-controller.hcl"))
     boundary_script = md5(file("scripts/setup_boundary.sh"))
   }
