@@ -16,8 +16,13 @@ To deploy this example:
 - In the `example` directory, run 
 
 ```
+# The AWS stuff needs to be created first
 terraform apply -target module.aws
+
+# When prompted provide a password for the admin user
 terraform apply -target module.vault
+
+# When the two above are done you can apply the boundary configuration
 terraform apply -target module.boundary
 ```
 

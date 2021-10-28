@@ -40,3 +40,4 @@ override.tf.json
 **/secrets/boundary.rsa
 **/secrets/boundary.rsa.pub
 **/ssh_into_machine_and_tail.sh
+**/secrets/vault_root_token

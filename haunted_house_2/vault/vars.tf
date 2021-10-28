@@ -3,5 +3,5 @@ variable "vault_url" {
 }
 
 variable "vault_ips" {}
-
 variable "private_key_pem" {}
+variable "vault_admin_password" {}

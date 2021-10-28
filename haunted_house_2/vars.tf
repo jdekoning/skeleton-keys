@@ -5,7 +5,7 @@ variable "boundary_bin" {
 variable "boundary_key_name" {
   description = "Private key name on AWS"
   type        = string
-  default    = "Boundary-2 EC2 machines access key"
+  default     = "Boundary-2 EC2 machines access key"
 }
 
 variable "haunted_house_domain" {
@@ -13,3 +13,5 @@ variable "haunted_house_domain" {
   type        = string
   default     = "skeleton-key.nl"
 }
+
+variable "vault_admin_password" {}
