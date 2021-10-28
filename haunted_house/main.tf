@@ -1,17 +1,32 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+terraform {
+  backend "s3" {
+    bucket     = "haunted-house-skeletons"
+    key        = "core-reference/terraform.tfstate"
+    region     = "eu-west-1"
+    kms_key_id = "alias/boundary_state-key"
   }
+}
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+module "aws" {
+  source               = "./aws"
+  boundary_bin         = var.boundary_bin
+  boundary_key_name    = var.boundary_key_name
+  haunted_house_domain = var.haunted_house_domain
+}
 
-  # 099720109477 is the id of the Canonical account
-  # that releases the official AMIs.
-  owners = ["099720109477"]
+module "boundary" {
+  source               = "./boundary"
+  boundary_url         = "https://boundary.${var.haunted_house_domain}"
+  vault_url            = "https://vault.${var.haunted_house_domain}"
+  target_ips           = module.aws.target_ips
+  kms_recovery_key_id  = module.aws.kms_recovery_key_id
+  vault_boundary_token = module.vault.vault_boundary_token
+}
+
+module "vault" {
+  source               = "./vault"
+  vault_url            = "https://vault.${var.haunted_house_domain}"
+  vault_ips            = module.aws.vault_ips
+  private_key_pem      = module.aws.private_key
+  vault_admin_password = var.vault_admin_password
 }
