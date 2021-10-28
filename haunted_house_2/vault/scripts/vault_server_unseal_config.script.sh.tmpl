@@ -1,0 +1,5 @@
+#!/bin/bash -e
+export VAULT_ADDR=http://localhost:8200
+vault operator unseal ${vault_unseal_key_1}
+vault operator unseal ${vault_unseal_key_2}
+vault operator unseal ${vault_unseal_key_3}

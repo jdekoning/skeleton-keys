@@ -16,12 +16,9 @@ To deploy this example:
 - In the `example` directory, run 
 
 ```
-terraform apply -target module.aws -var boundary_bin=<path to your binary>
-```
-
-If your public SSH key you want to SSH to these hosts are not located at `~/.ssh/id_rsa.pub` then you'll also need to override that value:
-```
-terraform apply -target module.aws -var boundary_bin=<path to your binary> -var pub_ssh_key_path=<path to your SSH public key>
+terraform apply -target module.aws
+terraform apply -target module.vault
+terraform apply -target module.boundary
 ```
 
 If the private key is not named the same as the public key but without the .pub suffix and/or is not stored in the same directory, you can use the `priv_ssh_key_path` variable also to point to its location; otherwise its filename will be inferred from the filename of the public key.
@@ -31,7 +28,7 @@ If the private key is not named the same as the public key but without the .pub 
   - `ssh ubuntu@<controller-ip>`
   - `sudo systemctl status boundary-controller`
   - For workers, the systemd unit is called `boundary-worker`
-  - The admin console will be available at `https://boundary-test-controller-<random_name>-<random_sha>.elb.us-east-1.amazonaws.com:9200`
+  - The admin console will be available at `https://boundary.skeleton-key.nl`
 
 ## Configure Boundary 
 - Configure boundary using `terraform apply` (without the target flag), this will configure boundary per `boundary/main.tf`
@@ -42,7 +39,7 @@ If the private key is not named the same as the public key but without the .pub 
 - Login on the CLI: 
 
 ```
-export BOUNDARY_ADDR='https://skeleton-key.nl'
+export BOUNDARY_ADDR='https://boundary.skeleton-key.nl'
 auth_method_id=$(boundary auth-methods list -recursive -format=json | jq '.items[0].id' -r)
 export BOUNDARY_TOKEN=$(boundary authenticate password -keyring-type=none   -format=json   -login-name=jim -password foofoofoo -auth-method-id=${auth_method_id} | jq '.item.attributes.token' -r)
 ```
@@ -55,4 +52,11 @@ Connect to the target in the private subnet via Boundary:
 
 ```
 boundary connect ssh --username ubuntu -target-name=backend_servers_ssh -target-scope-name=core_infra -- -i secrets/boundary.rsa
+# This would work, if anything was running on this port
+boundary connect http -scheme=http -target-name=backend_servers_website -target-scope-name=core_infra
+```
+
+If you feel really lucky, manually connect the credential source to the target and run (it will contain the secrets):
+```
+boundary targets authorize-session -id=ttcp_xxxxx -format json | jq .
 ```

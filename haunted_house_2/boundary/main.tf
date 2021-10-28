@@ -2,13 +2,13 @@ terraform {
   required_providers {
     boundary = {
       source  = "hashicorp/boundary"
-      version = "1.0.1"
+      version = "1.0.5"
     }
   }
 }
 
 provider "boundary" {
-  addr             = var.url
+  addr             = var.boundary_url
   recovery_kms_hcl = <<EOT
 kms "awskms" {
     purpose    = "recovery"

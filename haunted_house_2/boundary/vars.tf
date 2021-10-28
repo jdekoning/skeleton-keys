@@ -1,6 +1,9 @@
-variable "url" {
+variable "boundary_url" {
   default = "http://127.0.0.1:9200"
-  #  default = "http://boundary-demo-controller-ec52c62e6a9979ab.elb.us-east-1.amazonaws.com:9200"
+}
+
+variable "vault_url" {
+  default = "http://127.0.0.1:8200"
 }
 
 variable "backend_team" {
@@ -38,3 +41,5 @@ variable "target_ips" {
 variable "kms_recovery_key_id" {
   default = ""
 }
+
+variable "vault_boundary_token" {}
