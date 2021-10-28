@@ -31,6 +31,10 @@ variable "num_targets" {
   default = 1
 }
 
+variable "num_vaults" {
+  default = 1
+}
+
 variable "num_subnets_public" {
   default = 2
 }
